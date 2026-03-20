@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+
+  --color-gold-50: #fef6f0;
+  --color-gold-100: #fceae0;
+  --color-gold-200: #f9d0c0;
+  --color-gold-300: #f6b099;
+  --color-gold-400: #f48c6b;
+  --color-gold-500: #f37021;
+  --color-gold-600: #d95c16;
+  --color-gold-700: #b34812;
+  --color-gold-800: #8c3811;
+  --color-gold-900: #6b2e11;
+  --color-gold-950: #3b1706;
+
+  --color-stone-50: #f8f6f4;
+  --color-stone-100: #efebe6;
+  --color-stone-200: #dfd6cd;
+  --color-stone-300: #cbbbb0;
+  --color-stone-400: #b29b8c;
+  --color-stone-500: #9a7e6c;
+  --color-stone-600: #826453;
+  --color-stone-700: #6a5043;
+  --color-stone-800: #574339;
+  --color-stone-900: #483831;
+  --color-stone-950: #281e1a;
+}
