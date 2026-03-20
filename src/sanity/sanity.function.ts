@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { loadQuery } from "./sanityClient";
 import { urlForImage } from "./utils";
-import type { Landing, Agency, About, Property } from "../../sanity/sanity.types";
-import { type Location } from "../../sanity/sanity.types";
+import type { Landing, Agency, About, Property, Location } from "../../sanity.types";
 
 export const getMetadata = createServerFn().handler(async () => {
   const { data } = await loadQuery<Agency>(`*[_type=="agency"][0]`);

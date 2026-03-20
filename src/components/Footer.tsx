@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 // import { Crown } from "lucide-react";
 import { useLocales } from "../hooks/locales";
 import { resolveLanguage } from "../sanity/utils";
-import type { InternationalizedArrayDescription, Location } from "../../sanity/sanity.types";
+import type { InternationalizedArrayDescription, Location } from "../../sanity.types";
 
 type PropsType = {
   title: string;
