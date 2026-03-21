@@ -15,7 +15,9 @@
     "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types",
-    "sanity-typegen": "sanity typegen generate"
+    "sanity-pregen": "cd ./sanity && pnpm run typegen",
+    "sanity-typegen": "sanity typegen generate",
+    "sanity-deploy": "cd ./sanity && pnpm run deploy"
   },
   "dependencies": {
     "@sanity/client": "^7.19.0",

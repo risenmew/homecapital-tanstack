@@ -175,12 +175,20 @@ export type Property = {
     bedrooms?: number
     bathrooms?: number
   }
-  amenities?: Array<{
+  features?: Array<{
+    icon?: IconPicker
     en?: string
     vi?: string
-    _type: 'amenity'
+    _type: 'feature'
     _key: string
   }>
+}
+
+export type IconPicker = {
+  _type: 'iconPicker'
+  provider?: string
+  name?: string
+  svg?: string
 }
 
 export type Slug = {
@@ -309,6 +317,7 @@ export type AllSanitySchemaTypes =
   | Landing
   | Agency
   | Property
+  | IconPicker
   | Slug
   | InternationalizedArrayStringValue
   | InternationalizedArrayDescriptionValue

@@ -8,6 +8,7 @@ import type {
   Property,
   Location,
   InternationalizedArrayDescription,
+  IconPicker,
 } from "../../sanity.types";
 
 export const getMetadata = createServerFn().handler(async () => {
@@ -135,9 +136,10 @@ export type DetailListingType = Feature & {
   gallery: string[];
   features?:
     | {
+        icon?: IconPicker;
         en?: string | undefined;
         vi?: string | undefined;
-        _type: "amenity";
+        _type: "feature";
         _key: string;
       }[]
     | undefined;
@@ -169,6 +171,6 @@ export const getEntry = createServerFn()
       listingStatus: p.listingStatus,
       gallery: processGallery.filter((i) => typeof i == "string"),
       description: p.description,
-      features: p.amenities,
+      features: p.features,
     };
   });

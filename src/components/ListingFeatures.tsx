@@ -51,7 +51,11 @@ export function ListingFeatures({ listing }: ListingFeaturesProps) {
                 key={idx}
                 className="flex items-center gap-4 text-stone-600 py-3 border-b border-stone-50"
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0" />
+                {feature.icon ? (
+                  <i className={`fa-solid text-gold-500 ${feature.icon.name}`} />
+                ) : (
+                  <div className="w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0" />
+                )}
                 <span className="font-light tracking-wide">{feature[lang]}</span>
               </div>
             ))}

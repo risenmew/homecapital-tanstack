@@ -14,13 +14,13 @@ export function ListingGallery({ images, onOpenLightbox }: ListingGalleryProps) 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
         {images.map((img, idx) => (
           <button
-            key={idx}
-            onClick={() => onOpenLightbox(idx)}
+            key={idx + 1}
+            onClick={() => onOpenLightbox(idx + 1)}
             className={`aspect-square overflow-hidden relative group `}
           >
             <img
               src={img}
-              alt={`Gallery ${idx}`}
+              alt={`Gallery ${idx + 1}`}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
