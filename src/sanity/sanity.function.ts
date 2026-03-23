@@ -29,7 +29,7 @@ export const getMetadata = createServerFn().handler(async () => {
 export const getLanding = createServerFn().handler(async () => {
   const { data } = await loadQuery<Landing>(`*[_type=="landing"][0]`);
   const backdropUrl = data?.backgroundImage?.asset
-    ? urlForImage(data.backgroundImage.asset).url()
+    ? urlForImage(data.backgroundImage.asset).width(2000).url()
     : "https://images.unsplash.com/photo-1565426873118-a17ed65d74b9?q=80&w=1752&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return {
     title: data.title,
