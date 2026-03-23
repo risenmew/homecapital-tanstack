@@ -3,7 +3,7 @@ import { useLocales } from "../hooks/locales";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-export default function Header({ siteName }: { siteName: string }) {
+export default function Header({ siteName, logo }: { siteName: string; logo: string }) {
   const { toggleLang, lang, t } = useLocales();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -14,7 +14,8 @@ export default function Header({ siteName }: { siteName: string }) {
           <div className="flex justify-between items-center h-20">
             <Link to="/" className="flex items-center gap-3 group">
               <div className="p-2 text-gold-600 group-hover:text-gold-700 transition-colors">
-                <i className="fa-solid fa-crown text-3xl"></i>
+                {/* <i className="fa-solid fa-crown text-3xl"></i> */}
+                <img src={logo} className="h-10 w-auto" alt={siteName} />
               </div>
               <div className="flex flex-col">
                 <span className="font-serif font-bold text-2xl tracking-wide text-stone-900 uppercase leading-none">

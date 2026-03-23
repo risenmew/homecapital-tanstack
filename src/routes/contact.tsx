@@ -1,12 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useLocales } from "../hooks/locales";
-import { getMetadata } from "../sanity/sanity.function";
 
 export const Route = createFileRoute("/contact")({
-  loader: async () => {
-    const agency = await getMetadata();
-    return { agency };
+  loader: async ({ context }) => {
+    return { agency: context };
   },
   component: Contact,
 });

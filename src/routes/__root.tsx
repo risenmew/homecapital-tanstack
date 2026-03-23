@@ -8,9 +8,12 @@ import appCss from "../styles.css?url";
 import { getMetadata } from "../sanity/sanity.function";
 
 export const Route = createRootRoute({
-  loader: async () => {
+  beforeLoad: async () => {
     const metadata = await getMetadata();
     return metadata;
+  },
+  loader: async ({ context }) => {
+    return context;
   },
 
   head: ({ loaderData }) => ({
@@ -58,7 +61,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <div className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-gold-200 selection:text-stone-900">
-          <Header siteName={loader.title} />
+          <Header siteName={loader.title} logo={loader.icon!} />
           {children}
           <Footer agency={loader} />
         </div>
