@@ -2,17 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { resolveLanguage } from "../sanity/utils";
 import { useLocales } from "../hooks/locales";
-import { getFeatured, getLanding, getLatest } from "../sanity/sanity.function";
+import {
+  featuredQueryOptions,
+  landingQueryOptions,
+  latestQueryOptions,
+} from "../sanity/sanity.function";
 import { ListingCard } from "../components/ListingCard";
 
 export const Route = createFileRoute("/")({
-  loader: async () => {
-    const data = await getLanding();
-    const featured = await getFeatured();
-    const sale = await getLatest({ data: "sale" });
-    const rent = await getLatest({ data: "rent" });
+  loader: async ({ context }) => {
+    const landing = await context.queryClient.ensureQueryData(landingQueryOptions());
+    const featured = await context.queryClient.ensureQueryData(featuredQueryOptions());
+    const sale = await context.queryClient.ensureQueryData(latestQueryOptions("sale"));
+    const rent = await context.queryClient.ensureQueryData(latestQueryOptions("rent"));
     return {
-      landing: data,
+      landing,
       featured,
       sale,
       rent,
@@ -25,12 +29,16 @@ function App() {
   const { landing, featured, sale, rent } = Route.useLoaderData();
   const { lang, t } = useLocales();
 
+  const banner = landing.backgroundImage
+    ? landing.backgroundImage
+    : `https://images.unsplash.com/photo-1565426873118-a17ed65d74b9?q=80&w=1752&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`;
+
   return (
     <div className="pb-0 bg-stone-50">
       {/* Banner */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={landing.banner} alt="Hero Background" className="w-full h-full object-cover" />
+          <img src={banner} alt="Hero Background" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/30 mix-blend-multiply" />
           <div className="absolute inset-0 bg-linear-to-t from-stone-900/80 via-transparent to-transparent" />
         </div>
@@ -42,7 +50,7 @@ function App() {
             transition={{ duration: 1, delay: 0.2 }}
             className="text-5xl md:text-8xl font-serif font-medium mb-8 leading-normal"
           >
-            {resolveLanguage(landing?.title, lang)}
+            {resolveLanguage(landing.title!, lang)}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -50,7 +58,7 @@ function App() {
             transition={{ duration: 1, delay: 0.4 }}
             className="text-lg md:text-xl font-light text-stone-200 mb-12 max-w-2xl font-sans tracking-wide"
           >
-            {resolveLanguage(landing?.subtitle, lang)}
+            {resolveLanguage(landing.subtitle!, lang)}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 30 }}

@@ -1,11 +1,21 @@
 import { motion } from "motion/react";
-
 import { Link } from "@tanstack/react-router";
+
+import type { InferFragmentType } from "groqd";
+
 import { useLocales } from "../hooks/locales";
 import { getDistrictFromZip } from "../sanity/utils";
-import type { Feature } from "../sanity/sanity.function";
+import { propertyCardFragments } from "../sanity/query";
 
-export function ListingCard({ listing, featured }: { listing: Feature; featured?: boolean }) {
+type PropertyListingProps = InferFragmentType<typeof propertyCardFragments>;
+
+export function ListingCard({
+  listing,
+  featured,
+}: {
+  listing: PropertyListingProps;
+  featured?: boolean;
+}) {
   const { t } = useLocales();
 
   const status = (() => {
@@ -33,8 +43,8 @@ export function ListingCard({ listing, featured }: { listing: Feature; featured?
         className="relative block overflow-hidden aspect-4/3"
       >
         <img
-          src={listing.photo}
-          alt={listing.title}
+          src={listing.featureImage}
+          alt={listing.title!}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
         />
@@ -51,7 +61,7 @@ export function ListingCard({ listing, featured }: { listing: Feature; featured?
 
         <div className="mb-4">
           <span className="text-gold-600 text-[10px] uppercase tracking-[0.2em] font-bold">
-            Budapest • {t("district")} {getDistrictFromZip(listing.location?.postalCode)}
+            Budapest • {t("district")} {getDistrictFromZip(listing.location!.postalCode!)}
           </span>
         </div>
 
@@ -69,7 +79,7 @@ export function ListingCard({ listing, featured }: { listing: Feature; featured?
         </div>
 
         <div className="text-2xl font-serif text-stone-900 mb-6 flex justify-end lining-nums">
-          {listing.value?.currency} {listing.value?.priceAmount!.toLocaleString()}
+          {listing.propertyValue?.currency} {listing.propertyValue?.priceAmount!.toLocaleString()}
           {listing.listingStatus == "rent" ? t("month") : ""}
         </div>
 

@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useLocales } from "../hooks/locales";
-import type { DetailListingType } from "../sanity/sanity.function";
+import type { InferResultType } from "groqd";
+import type { entryQuery } from "../sanity/query";
 
 interface ListingSidebarProps {
-  listing: DetailListingType;
+  listing: InferResultType<ReturnType<typeof entryQuery>>;
 }
 
 export function ListingSidebar({ listing }: ListingSidebarProps) {
@@ -15,13 +16,14 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
       <div className="bg-white shadow-xl p-8 border-t-4 border-gold-600 md:hidden flex flex-col gap-4">
         <div>
           <div className="text-3xl font-serif text-stone-900 mb-1">
-            {listing.value?.currency} {listing.value?.priceAmount!.toLocaleString()}
-            {listing.listingStatus == "rent" ? t("month") : ""}
+            {listing!.propertyValue?.currency}{" "}
+            {listing?.propertyValue?.priceAmount!.toLocaleString()}
+            {listing!.listingStatus == "rent" ? t("month") : ""}
           </div>
           <div className="text-xs text-stone-400 uppercase tracking-widest">Asking Price</div>
         </div>
         <a
-          href={listing.location?.gmaps}
+          href={listing!.location!.gmaps!}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-2 text-xs uppercase tracking-widest text-gold-600 hover:text-gold-700 transition-colors border border-gold-200 hover:border-gold-300 rounded-full px-4 py-2 w-full bg-gold-50"
@@ -40,7 +42,7 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
 
         <div className="flex items-center gap-6 mb-8">
           <img
-            src={listing.photo}
+            src={listing!.featureImage}
             className="w-20 h-20 rounded-full object-cover border-2 border-gold-500 p-1"
           />
           <div>

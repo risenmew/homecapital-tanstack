@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useLocales } from "../hooks/locales";
 import { ListingCard } from "../components/ListingCard";
-import { getAll } from "../sanity/sanity.function";
+import { allQueryOptions } from "../sanity/sanity.function";
 import { useEffect, useMemo, useState } from "react";
 import { getDistrictFromZip } from "../sanity/utils";
 
 export const Route = createFileRoute("/collection")({
-  loader: async () => {
-    const all = await getAll();
+  loader: async ({ context }) => {
+    const all = await context.queryClient.ensureQueryData(allQueryOptions());
     return {
       all,
     };
@@ -25,14 +25,14 @@ function Collection() {
 
   const availableDistricts = useMemo(() => {
     const filtered = all.filter((l) => statusFilter === "all" || l.listingStatus === statusFilter);
-    const districts = new Set(filtered.map((l) => getDistrictFromZip(l.location?.postalCode)));
+    const districts = new Set(filtered.map((l) => getDistrictFromZip(l.location!.postalCode!)));
     return Array.from(districts).sort();
   }, [statusFilter]);
 
   const availableStatuses = useMemo(() => {
     const filtered = all.filter(
       (l) =>
-        districtFilter === "all" || getDistrictFromZip(l.location?.postalCode) === districtFilter,
+        districtFilter === "all" || getDistrictFromZip(l.location!.postalCode!) === districtFilter,
     );
     const statuses = new Set(filtered.map((l) => l.listingStatus));
     return Array.from(statuses);
@@ -57,7 +57,7 @@ function Collection() {
       const matchesStatus = statusFilter === "all" || listing.listingStatus === statusFilter;
       const matchesDistrict =
         districtFilter === "all" ||
-        getDistrictFromZip(listing.location?.postalCode) === districtFilter;
+        getDistrictFromZip(listing.location!.postalCode!) === districtFilter;
       return matchesStatus && matchesDistrict;
     });
   }, [statusFilter, districtFilter]);

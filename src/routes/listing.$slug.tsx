@@ -4,12 +4,13 @@ import { ListingHero } from "../components/ListingHero";
 import { ListingFeatures } from "../components/ListingFeatures";
 import { ListingGallery } from "../components/ListingGallery";
 import { useState } from "react";
-import { getEntry } from "../sanity/sanity.function";
+
 import { ListingSidebar } from "../components/ListingSidebar";
+import { entryQueryOptions } from "../sanity/sanity.function";
 
 export const Route = createFileRoute("/listing/$slug")({
-  loader: async ({ params }) => {
-    const listing = await getEntry({ data: params.slug });
+  loader: async ({ params, context }) => {
+    const listing = await context.queryClient.ensureQueryData(entryQueryOptions(params.slug));
     return {
       listing,
     };
@@ -20,6 +21,14 @@ export const Route = createFileRoute("/listing/$slug")({
 function Listing() {
   const { listing } = Route.useLoaderData();
 
+  if (!listing) {
+    return <h1>Not Found</h1>;
+  }
+
+  const gallery = listing.gallery
+    ? listing.gallery.map(({ url }) => url).filter((u) => u !== "")
+    : [];
+
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -29,20 +38,18 @@ function Listing() {
   };
 
   const nextLightboxImage = () => {
-    setLightboxIndex((prev) => (prev + 1) % (listing.gallery.length + 1));
+    setLightboxIndex((prev) => (prev + 1) % (gallery.length + 1));
   };
 
   const prevLightboxImage = () => {
-    setLightboxIndex(
-      (prev) => (prev - 1 + listing.gallery.length + 1) % (listing.gallery.length + 1),
-    );
+    setLightboxIndex((prev) => (prev - 1 + gallery.length + 1) % (gallery.length + 1));
   };
 
   return (
     <div className="bg-stone-50 min-h-screen pb-20">
       <Lightbox
         isOpen={isLightboxOpen}
-        images={[listing.photo, ...listing.gallery]}
+        images={[listing.featureImage, ...gallery]}
         currentIndex={lightboxIndex}
         onClose={() => setIsLightboxOpen(false)}
         onNext={nextLightboxImage}
@@ -56,7 +63,7 @@ function Listing() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div className="lg:col-span-2">
             <ListingFeatures listing={listing} />
-            <ListingGallery images={listing.gallery} onOpenLightbox={openLightbox} />
+            <ListingGallery images={gallery} onOpenLightbox={openLightbox} />
           </div>
           <ListingSidebar listing={listing} />
         </div>

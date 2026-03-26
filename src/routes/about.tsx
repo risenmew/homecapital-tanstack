@@ -2,18 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { resolveLanguage } from "../sanity/utils";
 import { motion } from "motion/react";
 import { useLocales } from "../hooks/locales";
-import { getAbout } from "../sanity/sanity.function";
+import { aboutQueryOptions } from "../sanity/sanity.function";
 
 export const Route = createFileRoute("/about")({
-  loader: async () => {
-    const data = await getAbout();
-    return data;
+  loader: async ({ context }) => {
+    const about = await context.queryClient.ensureQueryData(aboutQueryOptions());
+    return {
+      about,
+    };
   },
   component: About,
 });
 
 function About() {
-  const data = Route.useLoaderData();
+  const { about: data } = Route.useLoaderData();
   const { lang, t } = useLocales();
 
   return (
@@ -34,7 +36,7 @@ function About() {
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-serif font-medium mb-8"
           >
-            {resolveLanguage(data?.title, lang)}
+            {resolveLanguage(data.title!, lang)}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -42,7 +44,7 @@ function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-stone-300 leading-relaxed font-light max-w-2xl mx-auto"
           >
-            {resolveLanguage(data?.subtitle, lang)}
+            {resolveLanguage(data.subtitle!, lang)}
           </motion.p>
         </div>
       </section>
@@ -55,15 +57,15 @@ function About() {
               {t("philosophy")}
             </span>
             <h2 className="text-4xl font-serif text-stone-900 mb-8">
-              {resolveLanguage(data.hero.title, lang)}
+              {resolveLanguage(data.hero!.philosophyTitle!, lang)}
             </h2>
             <p className="text-stone-600 mb-6 leading-relaxed font-light text-lg">
-              {resolveLanguage(data.hero.desc, lang)}
+              {resolveLanguage(data.hero!.philosophyDesc!, lang)}
             </p>
           </div>
           <div className="relative h-125 shadow-2xl border-8 border-white">
             <img
-              src={data.hero.banner}
+              src={data.hero!.aboutPhoto}
               alt="Budapest Architecture"
               className="w-full h-full object-cover"
             />
@@ -96,9 +98,9 @@ function About() {
                     className="bg-stone-50 p-8 text-center hover:shadow-xl transition-shadow duration-500 border border-stone-100"
                   >
                     <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                      {member.photo ? (
+                      {member.memberPhoto ? (
                         <img
-                          src={member.photo}
+                          src={member.memberPhoto}
                           className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                         />
                       ) : (
@@ -106,13 +108,13 @@ function About() {
                       )}
                     </div>
                     <h3 className="text-2xl font-serif text-stone-900 mb-2">
-                      {resolveLanguage(member.name, lang)}
+                      {resolveLanguage(member.memberName!, lang)}
                     </h3>
                     <div className="text-gold-600 text-xs uppercase tracking-widest font-bold mb-6">
-                      {resolveLanguage(member.title, lang)}
+                      {resolveLanguage(member.memberTitle!, lang)}
                     </div>
                     <p className="text-stone-600 leading-relaxed font-light italic">
-                      {resolveLanguage(member.about, lang)}
+                      {resolveLanguage(member.memberAbout!, lang)}
                     </p>
                   </motion.div>
                 ))

@@ -1,21 +1,25 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 import appCss from "../styles.css?url";
-import { getMetadata } from "../sanity/sanity.function";
+import { agencyQueryOptions } from "../sanity/sanity.function";
+import type { QueryClient } from "@tanstack/react-query";
 
-export const Route = createRootRoute({
-  beforeLoad: async () => {
-    const metadata = await getMetadata();
-    return metadata;
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
+  beforeLoad: async ({ context }) => {
+    const metadata = await context.queryClient.ensureQueryData(agencyQueryOptions());
+    return { metadata };
   },
   loader: async ({ context }) => {
-    return context;
+    return context.metadata;
   },
-
+  // ssr: "data-only",
   head: ({ loaderData }) => ({
     meta: [
       {
@@ -26,13 +30,13 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: loaderData?.title,
+        title: loaderData?.name,
       },
     ],
     links: [
       {
         rel: "icon",
-        href: loaderData?.icon,
+        href: loaderData?.logo,
       },
       {
         rel: "stylesheet",
@@ -55,13 +59,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const loader = Route.useLoaderData();
 
   return (
-    <html>
+    <html suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
         <div className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-gold-200 selection:text-stone-900">
-          <Header siteName={loader.title} logo={loader.icon!} />
+          <Header siteName={loader.name!} logo={loader.logo!} />
           {children}
           <Footer agency={loader} />
         </div>
@@ -73,6 +77,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             {
               name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
+            },
+            {
+              name: "Tanstack Query",
+              render: <ReactQueryDevtoolsPanel />,
             },
           ]}
         />

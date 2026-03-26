@@ -4,7 +4,7 @@ import { useLocales } from "../hooks/locales";
 
 export const Route = createFileRoute("/contact")({
   loader: async ({ context }) => {
-    return { agency: context };
+    return { agency: context.metadata };
   },
   component: Contact,
 });
@@ -57,7 +57,7 @@ function Contact() {
                 <div>
                   <h3 className="font-serif text-xl text-white mb-2">{t("visitUs")}</h3>
                   <p className="text-stone-400 font-light leading-relaxed">
-                    {agency.location?.address}
+                    {agency!.location!.address}
                   </p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ function Contact() {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl text-white mb-2">{t("callUs")}</h3>
-                  <p className="text-stone-400 font-light">{agency.contacts?.phone}</p>
+                  <p className="text-stone-400 font-light">{agency.contactDetails?.phone}</p>
                 </div>
               </div>
 
@@ -78,7 +78,7 @@ function Contact() {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl text-white mb-2">{t("emailUs")}</h3>
-                  <p className="text-stone-400 font-light">{agency.contacts?.email}</p>
+                  <p className="text-stone-400 font-light">{agency.contactDetails?.email}</p>
                 </div>
               </div>
 
@@ -88,7 +88,7 @@ function Contact() {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl text-white mb-2">{t("openingHours")}</h3>
-                  <p className="text-stone-400 font-light">{agency.hour}</p>
+                  <p className="text-stone-400 font-light">{agency.openingHours}</p>
                 </div>
               </div>
             </div>

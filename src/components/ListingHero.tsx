@@ -1,12 +1,13 @@
-import { motion, AnimatePresence } from "motion/react";
-import { useLocales } from "../hooks/locales";
 import { Link } from "@tanstack/react-router";
-import type { DetailListingType } from "../sanity/sanity.function";
+import { motion, AnimatePresence } from "motion/react";
+import type { InferResultType } from "groqd";
+
+import { useLocales } from "../hooks/locales";
 import { getDistrictFromZip } from "../sanity/utils";
+import type { entryQuery } from "../sanity/query";
 
 interface ListingHeroProps {
-  listing: DetailListingType;
-
+  listing: InferResultType<ReturnType<typeof entryQuery>>;
   onOpenLightbox: (index: number) => void;
 }
 
@@ -17,8 +18,8 @@ export function ListingHero({ listing, onOpenLightbox }: ListingHeroProps) {
     <div className="relative h-[70vh] md:h-[85vh] bg-stone-900 group">
       <AnimatePresence mode="wait">
         <motion.img
-          src={listing.photo}
-          alt={listing.title}
+          src={listing!.featureImage}
+          alt={listing!.title!}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -41,23 +42,23 @@ export function ListingHero({ listing, onOpenLightbox }: ListingHeroProps) {
         <div className="text-white max-w-4xl">
           <div className="flex items-center gap-3 mb-4">
             <span className="bg-gold-600 text-white px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold">
-              {t("district")} {getDistrictFromZip(listing.location?.postalCode)}
+              {t("district")} {getDistrictFromZip(listing!.location!.postalCode!)}
             </span>
             <span className="text-gold-200 uppercase tracking-[0.2em] text-xs font-medium">
               Budapest
             </span>
           </div>
           <h1 className="text-4xl md:text-6xl font-serif font-medium mb-4 leading-tight">
-            {listing.title}
+            {listing!.title}
           </h1>
           <div className="flex items-center text-stone-300 text-lg font-light mt-2">
             <i className="fa-solid fa-map-pin mr-2 text-gold-500"></i>
-            {listing.location?.address}, Budapest
+            {listing!.location?.address}, Budapest
           </div>
         </div>
         <div className="hidden md:flex flex-col gap-4">
           <a
-            href={listing.location?.gmaps}
+            href={listing!.location!.gmaps!}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-gold-400 hover:text-gold-300 transition-colors border border-gold-500/30 hover:border-gold-400 rounded-full px-4 py-1.5 w-fit bg-black/50 backdrop-blur-sm"
@@ -67,10 +68,11 @@ export function ListingHero({ listing, onOpenLightbox }: ListingHeroProps) {
           </a>
           <div className="bg-white/10 backdrop-blur-md p-8 text-white border border-white/20 min-w-75">
             <div className="text-4xl font-serif mb-1">
-              {listing.value?.currency} {listing.value?.priceAmount!.toLocaleString()}
+              {listing?.propertyValue?.currency}{" "}
+              {listing?.propertyValue?.priceAmount!.toLocaleString()}
             </div>
             <div className="text-xs text-gold-200 uppercase tracking-widest">
-              {listing.listingStatus == "rent" ? t("month") : ""}
+              {listing!.listingStatus == "rent" ? t("month") : ""}
             </div>
           </div>
         </div>
