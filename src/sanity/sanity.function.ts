@@ -15,7 +15,6 @@ import {
 // AGENCY
 
 const getAgency = createServerFn().handler(async () => {
-  console.log(`${new Date().toISOString()} -> Begin fetch: Agency`);
   const agency = await runQuery(agencyQuery);
   return agency;
 });

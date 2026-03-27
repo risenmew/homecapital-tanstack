@@ -177,6 +177,14 @@ const translation = {
     vi: "Gửi",
     en: "Submit",
   },
+  headline: {
+    vi: `Ngôi nhà của bạn - Đầu tư thông minh - Cuộc sống trọn vẹn`,
+    en: "For your home - Invest smart - Live better",
+  },
+  subheadline: {
+    vi: "Chuyên nghiệp trên từng dự án BĐS",
+    en: "Experience in real estate",
+  },
 } satisfies TranslationText;
 
 export { translation };
