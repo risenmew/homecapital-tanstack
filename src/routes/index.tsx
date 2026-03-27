@@ -67,22 +67,24 @@ function Banner({ landing }: { landing: InferResultType<typeof landingQuery> }) 
         <div className="absolute inset-0 bg-linear-to-t from-stone-900/80 via-transparent to-transparent" />
       </div>
 
-      <div className="relative z-10 text-left text-white px-4 max-w-5xl mx-auto w-full">
+      <div className="relative z-10 text-left text-white px-4 max-w-5xl mx-auto w-full flex justify-center flex-col items-center">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="text-5xl md:text-8xl font-serif font-medium mb-8 leading-normal"
+          className="text-xl md:text-5xl font-serif font-medium leading-normal text-center"
         >
-          {resolveLanguage(landing.title!, lang)}
+          {/* {resolveLanguage(landing.title!, lang)} */}
+          {t("headline")}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="text-lg md:text-xl font-light text-stone-200 mb-12 max-w-2xl font-sans tracking-wide"
+          className="text-xl md:text-5xl font-serif font-medium mb-8 leading-normal text-center"
         >
-          {resolveLanguage(landing.subtitle!, lang)}
+          {/* {resolveLanguage(landing.subtitle!, lang)} */}
+          {t("subheadline")}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

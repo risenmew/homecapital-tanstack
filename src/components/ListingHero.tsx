@@ -38,7 +38,7 @@ export function ListingHero({ listing, onOpenLightbox }: ListingHeroProps) {
         <i className="fa-solid fa-arrow-left"></i>
       </Link>
 
-      <div className="absolute bottom-0 left-0 right-0 z-10 p-8 md:p-16 flex flex-col md:flex-row justify-between items-end gap-8">
+      <div className="absolute bottom-0 left-0 right-0 z-10 p-8 md:p-16 md:mx-12 mb-10 md:mb-2 flex flex-col md:flex-row justify-between gap-8">
         <div className="text-white max-w-4xl">
           <div className="flex items-center gap-3 mb-4">
             <span className="bg-gold-600 text-white px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold">
