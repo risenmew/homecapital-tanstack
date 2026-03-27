@@ -24,6 +24,7 @@ export const agencyQueryOptions = () =>
   queryOptions({
     queryKey: ["agency"],
     queryFn: () => getAgency(),
+    staleTime: 5 * 60 * 1000,
   });
 
 // LANDING
@@ -38,11 +39,13 @@ export const landingQueryOptions = () =>
   queryOptions({
     queryKey: ["landing"],
     queryFn: () => getLanding(),
+    staleTime: 5 * 60 * 1000,
   });
 
 // About
 
 const getAbout = createServerFn().handler(async () => {
+  console.log(`${new Date().toISOString()} -> Begin fetch: About`);
   const about = await runQuery(aboutQuery);
   return about;
 });
@@ -51,6 +54,7 @@ export const aboutQueryOptions = () =>
   queryOptions({
     queryKey: ["about"],
     queryFn: () => getAbout(),
+    staleTime: 5 * 60 * 1000,
   });
 
 // Featured
@@ -107,5 +111,4 @@ export const entryQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ["property", slug],
     queryFn: () => getEntry({ data: slug }),
-    initialData: () => getEntry({ data: slug }),
   });
