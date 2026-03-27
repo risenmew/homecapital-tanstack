@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { resolveLanguage } from "../sanity/utils";
 import { useLocales } from "../hooks/locales";
 import {
   featuredQueryOptions,
@@ -53,7 +52,7 @@ function App() {
  */
 
 function Banner({ landing }: { landing: InferResultType<typeof landingQuery> }) {
-  const { t, lang } = useLocales();
+  const { t } = useLocales();
 
   const banner = landing.backgroundImage
     ? landing.backgroundImage
