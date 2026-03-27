@@ -5,6 +5,7 @@ import { ListingCard } from "../components/ListingCard";
 import { allQueryOptions } from "../sanity/sanity.function";
 import { useEffect, useMemo, useState } from "react";
 import { getDistrictFromZip } from "../sanity/utils";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/collection")({
   loader: async ({ context }) => {
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/collection")({
 });
 
 function Collection() {
-  const { all } = Route.useLoaderData();
+  const { data: all } = useSuspenseQuery(allQueryOptions());
   const { t } = useLocales();
 
   const [statusFilter, setStatusFilter] = useState<"all" | "sale" | "rent">("all");

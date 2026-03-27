@@ -9,6 +9,7 @@ import { ListingSidebar } from "../components/ListingSidebar";
 import { entryQueryOptions } from "../sanity/sanity.function";
 import type { InferResultType } from "groqd";
 import type { entryQuery } from "../sanity/query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/listing/$slug")({
   loader: async ({ params, context }) => {
@@ -21,7 +22,8 @@ export const Route = createFileRoute("/listing/$slug")({
 });
 
 function Listing() {
-  const { listing } = Route.useLoaderData();
+  const params = Route.useParams();
+  const { data: listing } = useSuspenseQuery(entryQueryOptions(params.slug));
   const {
     isLightboxOpen,
     lightboxIndex,

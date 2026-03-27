@@ -3,6 +3,8 @@ import { motion } from "motion/react";
 import { useLocales } from "../hooks/locales";
 import type { InferResultType } from "groqd";
 import type { agencyQuery } from "../sanity/query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { agencyQueryOptions } from "../sanity/sanity.function";
 
 export const Route = createFileRoute("/contact")({
   loader: async ({ context }) => {
@@ -12,7 +14,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
-  const { agency } = Route.useLoaderData();
+  const { data: agency } = useSuspenseQuery(agencyQueryOptions());
   const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfNftU1OeNOgXNDFUqGrR0pxjebH83saLuSUtq2iYR142x_2Q/viewform?embedded=true`;
 
   return (

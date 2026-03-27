@@ -5,6 +5,7 @@ import { useLocales } from "../hooks/locales";
 import { aboutQueryOptions } from "../sanity/sanity.function";
 import type { InferResultType } from "groqd";
 import type { aboutQuery } from "../sanity/query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/about")({
   loader: async ({ context }) => {
@@ -17,7 +18,8 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
-  const { about } = Route.useLoaderData();
+  const { data: about } = useSuspenseQuery(aboutQueryOptions());
+
   return (
     <div className="bg-stone-50 min-h-screen pb-20">
       <Hero about={about} />

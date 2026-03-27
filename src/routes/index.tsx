@@ -10,6 +10,7 @@ import {
 import { ListingCard } from "../components/ListingCard";
 import type { InferFragmentType, InferResultType } from "groqd";
 import type { landingQuery, propertyCardFragments } from "../sanity/query";
+import { useSuspenseQueries } from "@tanstack/react-query";
 
 type ListingsProps = InferFragmentType<typeof propertyCardFragments>;
 
@@ -30,13 +31,20 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-  const { landing, featured, sale, rent } = Route.useLoaderData();
+  const [landing, featured, sale, rent] = useSuspenseQueries({
+    queries: [
+      landingQueryOptions(),
+      featuredQueryOptions(),
+      latestQueryOptions("sale"),
+      latestQueryOptions("rent"),
+    ],
+  });
   return (
     <div className="pb-0 bg-stone-50">
-      <Banner landing={landing} />
-      <Featured featured={featured} />
-      <Latest type={"saleProperty"} listings={sale} />
-      <Latest type={"rentProperty"} listings={rent} />
+      <Banner landing={landing.data} />
+      <Featured featured={featured.data} />
+      <Latest type={"saleProperty"} listings={sale.data} />
+      <Latest type={"rentProperty"} listings={rent.data} />
     </div>
   );
 }
