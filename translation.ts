@@ -185,6 +185,10 @@ const translation = {
     vi: "Chuyên nghiệp trên từng dự án BĐS",
     en: "Experience in real estate",
   },
+  expert: {
+    vi: "Chuyên gia",
+    en: "Expert",
+  },
 } satisfies TranslationText;
 
 export { translation };
