@@ -6,6 +6,7 @@ import { aboutQueryOptions } from "../sanity/sanity.function";
 import type { InferResultType } from "groqd";
 import type { aboutQuery } from "../sanity/query";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import Markdown from "react-markdown";
 
 export const Route = createFileRoute("/about")({
   loader: async ({ context }) => {
@@ -104,14 +105,14 @@ function Team({ about }: { about: InferResultType<typeof aboutQuery> }) {
     <section className="bg-white py-24 border-t border-stone-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <h2 className="text-4xl font-serif text-stone-900 mb-6">{t("member")}</h2>
+          <h2 className="text-4xl font-serif text-stone-900 mb-6">{t("expert")}</h2>
           <div className="w-16 h-1 bg-gold-400 mx-auto mb-6"></div>
           <p className="text-stone-500 max-w-2xl mx-auto font-light text-lg">
             {t("memberSubtitle")}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="flex flex-col gap-10">
           {about?.members
             ? about.members.map((member, id) => <TeamMember member={member} key={id} />)
             : ""}
@@ -133,27 +134,32 @@ function TeamMember({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 1 * 0.2, duration: 0.6 }}
-      className="bg-stone-50 p-8 text-center hover:shadow-xl transition-shadow duration-500 border border-stone-100"
+      className="flex flex-col lg:flex-row bg-stone-50 p-8 text-center hover:shadow-xl transition-shadow duration-500 border border-stone-100 justify-between px-10 lg:gap-20 lg:mx-20 items-center"
     >
-      <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white shadow-lg">
-        {member.memberPhoto ? (
-          <img
-            src={member.memberPhoto}
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-          />
-        ) : (
-          ""
-        )}
+      <div className="min-w-fit">
+        <div className="w-48 h-48 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          {member.memberPhoto ? (
+            <img
+              src={member.memberPhoto}
+              className="w-full h-full object-cover transition-all duration-500"
+            />
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="min-w-fit">
+          <h3 className="text-2xl font-serif text-stone-900 mb-2 min-w-fit inline-block">
+            {resolveLanguage(member.memberName!, lang)}
+          </h3>
+          <div className="text-gold-600 text-xs uppercase tracking-widest font-bold mb-6">
+            {resolveLanguage(member.memberTitle!, lang)}
+          </div>
+        </div>
       </div>
-      <h3 className="text-2xl font-serif text-stone-900 mb-2">
-        {resolveLanguage(member.memberName!, lang)}
-      </h3>
-      <div className="text-gold-600 text-xs uppercase tracking-widest font-bold mb-6">
-        {resolveLanguage(member.memberTitle!, lang)}
+
+      <div className="text-stone-600 font-light text-md flex flex-col gap-2 ">
+        <Markdown>{resolveLanguage(member.memberAbout!, lang)}</Markdown>
       </div>
-      <p className="text-stone-600 leading-relaxed font-light italic">
-        {resolveLanguage(member.memberAbout!, lang)}
-      </p>
     </motion.div>
   );
 }
