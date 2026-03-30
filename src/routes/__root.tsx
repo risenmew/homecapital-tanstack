@@ -1,6 +1,7 @@
 import type { QueryClient } from '@tanstack/react-query'
 
 import { TanStackDevtools } from '@tanstack/react-devtools'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import {
   HeadContent,
@@ -62,7 +63,7 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const { data: agency } = useSuspenseQuery(agencyQueryOptions());
+  const { data: agency } = useSuspenseQuery(agencyQueryOptions())
 
   return (
     <html suppressHydrationWarning>
@@ -70,7 +71,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-gold-200 selection:text-stone-900">
+        <div className="min-h-screen bg-stone-50 font-sans text-stone-900 selection:bg-gold-200 selection:text-stone-900">
           <Header siteName={agency.name!} logo={agency.logo!} />
           {children}
           <Footer agency={agency} />

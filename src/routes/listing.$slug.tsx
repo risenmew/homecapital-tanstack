@@ -123,7 +123,7 @@ const ListingContent = memo(function ListingContent({
   gallery,
   onOpenLightbox,
 }: {
-  listing: NonNullable<ReturnType<typeof Route.useLoaderData>['listing']>
+  listing: InferResultType<ReturnType<typeof entryQuery>>
   gallery: string[]
   onOpenLightbox: (index: number) => void
 }) {
