@@ -62,7 +62,7 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const loader = Route.useLoaderData()
+  const { data: agency } = useSuspenseQuery(agencyQueryOptions());
 
   return (
     <html suppressHydrationWarning>
@@ -70,10 +70,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className="min-h-screen bg-stone-50 font-sans text-stone-900 selection:bg-gold-200 selection:text-stone-900">
-          <Header siteName={loader.name!} logo={loader.logo!} />
+        <div className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-gold-200 selection:text-stone-900">
+          <Header siteName={agency.name!} logo={agency.logo!} />
           {children}
-          <Footer agency={loader} />
+          <Footer agency={agency} />
         </div>
         <TanStackDevtools
           config={{
