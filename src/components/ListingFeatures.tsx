@@ -40,7 +40,7 @@ export function ListingFeatures({ listing }: ListingFeaturesProps) {
         </div>
       </div>
 
-      <div className="prose prose-stone prose-lg max-w-none prose-headings:font-serif prose-headings:font-medium prose-p:font-light prose-p:leading-relaxed prose-a:text-gold-600 prose-blockquote:border-gold-400 prose-blockquote:bg-stone-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:not-italic prose-li:marker:text-gold-500">
+      <div className="prose prose-stone prose-base max-w-none prose-headings:font-serif prose-headings:font-medium prose-p:font-light prose-p:leading-relaxed prose-a:text-gold-600 prose-blockquote:border-gold-400 prose-blockquote:bg-stone-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:not-italic prose-li:marker:text-gold-500">
         <Markdown>{resolveLanguage(listing!.description!, lang)}</Markdown>
       </div>
 
